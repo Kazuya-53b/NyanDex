@@ -11,9 +11,9 @@ class ImageUploader < CarrierWave::Uploader::Base
   end
 
   def extension_allowlist
-    %w(jpg jpeg gif png)
+    %w[jpg jpeg gif png]
   end
-  
+
   # トリミング処理
   def crop_image(crop_params)
     manipulate! do |img|
