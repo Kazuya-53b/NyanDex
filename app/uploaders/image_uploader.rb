@@ -7,7 +7,11 @@ class ImageUploader < CarrierWave::Uploader::Base
   end
 
   def size_range
-    1..5.megabytes
+    1..10.megabytes
+  end
+
+  def extension_allowlist
+    %w[jpg jpeg gif png]
   end
 
   # トリミング処理
@@ -24,6 +28,7 @@ class ImageUploader < CarrierWave::Uploader::Base
 
       # トリミングを行い、正方形にする
       img.crop("#{width}x#{height}+#{x}+#{y}")
+      img.format("jpg")
       img
     end
   end
