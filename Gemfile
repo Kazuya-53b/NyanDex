@@ -27,7 +27,7 @@ gem "font-awesome-sass", "~> 6.5.2"
 
 gem "aws-sdk-s3", "~> 1.167"
 
-gem "carrierwave", "~> 2.2.6"
+gem "carrierwave", "~> 3.0.7"
 
 gem "fog-aws", "~> 3.0"
 
