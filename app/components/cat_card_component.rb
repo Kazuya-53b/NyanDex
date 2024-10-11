@@ -13,16 +13,16 @@ class CatCardComponent < ViewComponent::Base
           content_tag(:div, class: "image-container") do
             image_tag(image, class: "square-image")
           end,
-          content_tag(:div, class: "flex justify-center mt-2 space-x-card-status") do
+          content_tag(:div, class: "flex justify-center space-x-card-status") do
             safe_join([
-              content_tag(:div, class: "status-box") do
+              content_tag(:div, class: "status-box cat-name") do
                 content_tag(:h3, @cat.name, class: "font-bold text-gray-500")
               end,
-              content_tag(:div, class: "status-box") do
-              content_tag(:p, "#{@cat.age}歳", class: "font-bold text-gray-500")
-              end,
-              content_tag(:div, class: "status-box") do
-              content_tag(:p, @cat.gender, class: "font-bold text-gray-500")
+              content_tag(:div, class: "cat-info") do
+                safe_join([
+                  content_tag(:p, "#{@cat.age}歳", class: "status-box font-bold text-gray-500 cat-age"),
+                  content_tag(:p, @cat.gender, class: "status-box font-bold text-gray-500 cat-gender")
+                ])
               end
             ])
           end,
