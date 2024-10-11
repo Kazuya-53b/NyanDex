@@ -29,3 +29,5 @@ en:
   cats:
     new:
       title: "マイにゃんこ登録"
+    edit:
+      title: "マイにゃんこ編集"
