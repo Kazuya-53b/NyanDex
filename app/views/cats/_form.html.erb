@@ -86,6 +86,10 @@
     </button>
 
     <%= form.submit '猫を登録', id: 'submit-button', class: 'bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2' %>
+
+    <div id="loading-indicator" style="display: none;" class="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+      <div class="loader border-4 border-t-4 border-gray-200 rounded-full w-16 h-16 animate-spin"></div>
+    </div>
   </div>
 <% end %>
 
@@ -121,6 +125,9 @@
             formSubmitted = true; // フォームが送信された
             // 送信後はbeforeunloadイベントを解除
             window.removeEventListener('beforeunload', handleBeforeUnload);
+
+            // ローディングインジケーターを表示
+            document.getElementById('loading-indicator').style.display = 'flex';
         }
     });
 
