@@ -22,12 +22,12 @@
 }
 
 h2 {
-  font-family: 'M PLUS Rounded 1c', sans-serif; /* M PLUS Rounded 1cを適用 */
-  color: #ff6b81; /* 見出しの色 */
-  font-weight: bold; /* 太字 */
-  text-align: center; /* 中央揃え */
-  font-size: 1.5rem; /* フォントサイズ */
-  margin-bottom: 1rem; /* 下部の余白 */
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  color: #ff6b81;
+  font-weight: bold;
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .profile-image {
