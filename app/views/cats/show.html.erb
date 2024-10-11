@@ -1,6 +1,8 @@
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <div class="items-center justify-center">
-  <h2 class="text-center text-xl text-black-400 font-bold mb-4 mt-6">
-    <%= @cat.name %> のプロフィール
+  <h2 class="text-center text-xl text-black-400 font-bold mb-4">
+    「<%= @cat.name %>」 のプロフィール
   </h2>
 
   <div id="cat-images" data-total-images="<%= @cat.images.size %>"></div>
@@ -22,15 +24,48 @@
   </div>
 
   <!-- Thumbnail Swiper -->
-  <div class="swiper-container thumb-swiper" style="margin-top: 20px;">
-    <div class="swiper-wrapper">
-      <% @cat.images.each do |image_url| %>
-        <div class="swiper-slide" style="cursor: pointer;">
-          <img src="<%= image_url %>" class="thumbnail-image" style="border: 2px solid transparent;">
-        </div>
-      <% end %>
+  <% if @cat.images.size > 1 %> <!-- 画像が2枚以上の時のみ表示 -->
+    <div class="swiper-container thumb-swiper" style="margin-top: 20px;">
+      <div class="swiper-wrapper">
+        <% @cat.images.each do |image_url| %>
+          <div class="swiper-slide" style="cursor: pointer;">
+            <img src="<%= image_url %>" class="thumbnail-image" style="border: 2px solid transparent;">
+          </div>
+        <% end %>
+      </div>
     </div>
+  <% end %>
+
+  <div class="cat-detail-info mt-4">
+    <p><strong>名前:</strong> <%= @cat.name %></p>
+    <p><strong>性別:</strong> <%= @cat.gender %></p>
+    <p><strong>年齢:</strong> <%= @cat.age %> 歳</p>
+    
+    <% if @cat.breed.present? %>
+      <p><strong>猫種:</strong> <%= @cat.breed %></p>
+    <% end %>
+
+    <% if @cat.color.present? %>
+      <p><strong>毛色:</strong> <%= @cat.color %></p>
+    <% end %>
+
+    <% if @cat.pattern.present? %>
+      <p><strong>柄:</strong> <%= @cat.pattern %></p>
+    <% end %>
+
+    <p><strong>にゃんこ紹介:</strong> <%= @cat.long_description %></p>
+
+    <div class="flex user-info mt-4 items-center">
+    <p class="mr-2"><strong>登録ユーザー:</strong></p>
+    <a href="<%= user_path(@cat.user) %>" class="flex items-center">
+      <img src="<%= @cat.user.profile_image %>" alt="<%= @cat.user.username %>のアイコン" class="user-icon w-12 h-12 rounded-full border-2 border-blue-400 object-cover cursor-pointer mr-2 ml-2" />
+      <span class="user-name"><%= @cat.user.username %></span>
+    </a>
   </div>
+  </div>
+
+  
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
@@ -39,38 +74,49 @@ document.addEventListener("DOMContentLoaded", function() {
     const mainSwiperContainer = document.querySelector('.main-swiper');
     const thumbSwiperContainer = document.querySelector('.thumb-swiper');
 
-    // サブSwiperの設定
-    const thumbSwiperOptions = {
-      slidesPerView: 'auto',
-      spaceBetween: 10,
-      centeredSlides: true,
-      slideToClickedSlide: true,
-      loop: false,
-    };
+    // サブSwiperが存在する場合のみ初期化
+    if (thumbSwiperContainer) {
+      const thumbSwiperOptions = {
+        slidesPerView: 'auto',
+        spaceBetween: 10,
+        centeredSlides: true,
+        slideToClickedSlide: true,
+        loop: false,
+      };
 
-    const thumbSwiper = new Swiper(thumbSwiperContainer, thumbSwiperOptions);
+      const thumbSwiper = new Swiper(thumbSwiperContainer, thumbSwiperOptions);
 
-    // メインSwiperの設定
-    const mainSwiperOptions = {
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-      loop: false,
-      thumbs: {
-        swiper: thumbSwiper,
-      },
-    };
+      const mainSwiperOptions = {
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        loop: false,
+        thumbs: {
+          swiper: thumbSwiper,
+        },
+      };
 
-    const mainSwiper = new Swiper(mainSwiperContainer, mainSwiperOptions);
+      const mainSwiper = new Swiper(mainSwiperContainer, mainSwiperOptions);
 
-    // サブSwiper内のスライドをクリックしたときのイベント
-    thumbSwiper.slides.forEach((slide, index) => {
-      slide.addEventListener('click', () => {
-        // メインSwiperのスライドを切り替え
-        mainSwiper.slideTo(index); // メインSwiperのスライドを移動
-        thumbSwiper.slideTo(index); // サブSwiperも同じインデックスに移動
+      // サブSwiper内のスライドをクリックしたときのイベント
+      thumbSwiper.slides.forEach((slide, index) => {
+        slide.addEventListener('click', () => {
+          mainSwiper.slideTo(index); // メインSwiperのスライドを移動
+          thumbSwiper.slideTo(index); // サブSwiperも同じインデックスに移動
+        });
       });
-    });
+    } else {
+      // サブSwiperが存在しない場合はメインSwiperの設定
+      const mainSwiperOptions = {
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        loop: false,
+      };
+
+      const mainSwiper = new Swiper(mainSwiperContainer, mainSwiperOptions);
+    }
 });
 </script>
