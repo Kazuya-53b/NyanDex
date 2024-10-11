@@ -94,31 +94,35 @@
   let currentIndex = 0;
   const croppedImages = [];
   let originalFile;
+  let shouldReset = false;
 
   document.addEventListener('DOMContentLoaded', function() {
-      const myForm = document.querySelector('form');  
-      let formSubmitted = false;  
-      let shouldReset = true;  
+    const myForm = document.querySelector('form');  
+    let formSubmitted = false;  
 
-      // ページ離脱時の確認
-      function handleBeforeUnload(event) {
-          event.preventDefault();
-          event.returnValue = '';
-      }
+    // ページ離脱時の確認
+    function handleBeforeUnload(event) {
+        if (!formSubmitted) { // フォームが送信されていない場合のみ確認
+            event.preventDefault();
+            event.returnValue = ''; // Chromeに必要な設定
+        }
+    }
 
-      // フォーム送信時の処理
-      myForm.addEventListener('submit', function(event) {
-          // beforeunloadイベントを解除
-          window.removeEventListener('beforeunload', handleBeforeUnload);
+    // ユーザー操作があった場合に`beforeunload`イベントリスナーを追加
+    window.addEventListener('click', function() {
+        window.addEventListener('beforeunload', handleBeforeUnload);
+    });
 
-          if (!confirm("フォームを送信してもよろしいですか？")) {
-              event.preventDefault();
-              // 再度beforeunloadイベントを設定
-              window.addEventListener('beforeunload', handleBeforeUnload);
-          } else {
-              formSubmitted = true;
-          }
-      });
+    // フォーム送信時の処理
+    myForm.addEventListener('submit', function(event) {
+        if (!confirm("フォームを送信してもよろしいですか？")) {
+            event.preventDefault(); // フォーム送信をキャンセル
+        } else {
+            formSubmitted = true; // フォームが送信された
+            // 送信後はbeforeunloadイベントを解除
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        }
+    });
 
       // ページが読み込まれたときにリセットする
       window.addEventListener('load', function() {
