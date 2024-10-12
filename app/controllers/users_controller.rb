@@ -57,7 +57,7 @@ class UsersController < ApplicationController
   def set_user
     @user = User.find(params[:id])
 
-    if @user != current_user && action_name != 'mypage'
+    if @user != current_user && action_name != "mypage"
       redirect_to root_path, alert: "アクセス権がありません"
     end
   end
