@@ -25,7 +25,9 @@ en:
       long_description: "にゃんこ紹介（詳細）"
   users:
     show:
-      title: "ユーザー情報"
+      title: "ユーザー設定"
+    mypage:
+      title: "マイページ"
   cats:
     new:
       title: "マイにゃんこ登録"

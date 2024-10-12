@@ -15,4 +15,8 @@ class User < ApplicationRecord
   def password_required?
     new_record? || password.present?
   end
+
+  def cats
+    super.order(created_at: :desc)
+  end
 end
