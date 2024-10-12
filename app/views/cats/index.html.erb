@@ -3,3 +3,8 @@
     <%= render CatCardComponent.with_collection(@cats) %>
   </div>
 </div>
+
+<div class="pagination flex justify-center mt-4">
+  <%= paginate @cats, class: 'btn-group' %>
+</div>
+
