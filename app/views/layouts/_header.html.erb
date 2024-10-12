@@ -8,8 +8,8 @@
         <%= image_tag(current_user.profile_image.url || '/assets/default_user_image.png', alt: "User Icon", class: "flex w-12 h-12 rounded-full border-2 border-blue-400 object-cover cursor-pointer", id: "user-icon") %>
         <div id="dropdown-menu" class="hidden absolute bg-white shadow-md mt-2 rounded-lg z-10">
         <ul class="flex flex-col">
-          <li><%= link_to 'マイページ', user_path(current_user), class: 'block px-4 py-2 hover:bg-gray-100' %></li>
-          <li><%= link_to 'アカウント設定', edit_user_registration_path, class: 'block px-4 py-2 hover:bg-gray-100' %></li>
+          <li><%= link_to 'マイページ', mypage_user_path(current_user), class: 'block px-4 py-2 hover:bg-gray-100' %></li>
+          <li><%= link_to 'ユーザー設定', user_path(current_user), class: 'block px-4 py-2 hover:bg-gray-100' %></li>
           <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'block px-4 py-2 hover:bg-gray-100' %></li>
         </ul>
       </div>

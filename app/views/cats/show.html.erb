@@ -56,16 +56,13 @@
     <p><strong>にゃんこ紹介:</strong> <%= @cat.long_description %></p>
 
     <div class="flex user-info mt-4 items-center">
-    <p class="mr-2"><strong>登録ユーザー:</strong></p>
-    <a href="<%= user_path(@cat.user) %>" class="flex items-center">
-      <img src="<%= @cat.user.profile_image %>" alt="<%= @cat.user.username %>のアイコン" class="user-icon w-12 h-12 rounded-full border-2 border-blue-400 object-cover cursor-pointer mr-2 ml-2" />
-      <span class="user-name"><%= @cat.user.username %></span>
-    </a>
+      <p class="mr-2"><strong>登録ユーザー:</strong></p>
+      <a href="<%= mypage_user_path(@cat.user) %>" class="flex items-center">
+        <img src="<%= @cat.user.profile_image %>" alt="<%= @cat.user.username %>のアイコン" class="user-icon w-12 h-12 rounded-full border-2 border-blue-400 object-cover cursor-pointer mr-2 ml-2" />
+        <span class="user-name"><%= @cat.user.username %></span>
+      </a>
+    </div>
   </div>
-  </div>
-
-  
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>

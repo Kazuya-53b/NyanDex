@@ -1,17 +1,14 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_user
 
   def show
-    @user = current_user
   end
 
   def edit
-    @user = User.find(params[:id])
   end
 
   def update_username
-    @user = User.find(params[:id])
-
     if @user.update(user_params)
       flash.now[:notice] = "ユーザー名を更新しました"
       respond_to do |format|
@@ -34,7 +31,6 @@ class UsersController < ApplicationController
   end
 
   def update_profile_image
-    @user = current_user
     if @user.update(user_params)
       flash.now[:notice] = "プロフィール画像を更新しました"
       respond_to do |format|
@@ -52,7 +48,19 @@ class UsersController < ApplicationController
     end
   end
 
+  def mypage
+    @cats = @user.cats
+  end
+
   private
+
+  def set_user
+    @user = User.find(params[:id])
+
+    if @user != current_user && action_name != 'mypage'
+      redirect_to root_path, alert: "アクセス権がありません"
+    end
+  end
 
   def user_params
     params.require(:user).permit(:username, :profile_image)

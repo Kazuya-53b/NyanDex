@@ -1,0 +1,46 @@
+<div class="flex items-center justify-center">
+  <div class="container mx-auto px-8 max-w-screen-lg">
+
+    <h2 class="text-center text-xl text-black-400 font-bold mb-4">
+      <% if current_user == @user %>
+        <%= I18n.t('users.mypage.title') %>
+      <% else %>
+        <%= @user.username %>さんのページ
+      <% end %>
+    </h2>
+
+    <% if @user.profile_image.present? %>
+      <div class="flex items-center justify-center mb-8">
+        <img src="<%= @user.profile_image %>" alt="<%= @user.username %>のアイコン" class="user-icon w-40 h-40 xs:w-32 xs:h-32 sm:w-56 sm:h-56 md:w-80 md:h-80 border-4 border-blue-400 object-cover" />
+      </div>
+    <% else %>
+      <div class="flex flex-col justify-center items-center mt-20 mb-10">
+        <p class="mb-4">アイコン画像を登録していません</p>
+        <% if @user == current_user %>
+          <%= link_to 'ユーザー設定へ', user_path(@user), class: 'text-blue-500 underline' %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <h4 class="text-center text-black-400 font-bold mb-4">
+      <% if current_user == @user %>
+        <div class="flex justify-center mt-4 mb-4">
+          <%= link_to "マイにゃんこ登録", new_cat_path, class: 'bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded' %>
+        </div>
+        <マイにゃんこ一覧>
+      <% else %>
+        <%= "<" + @user.username + "さんのにゃんこ一覧>" %>
+      <% end %>
+    </h4>
+
+    <% if @cats.present? %>
+      <div class="grid gap-4 grid-cols-2 md:grid-cols-3 mb-10">
+        <%= render CatCardComponent.with_collection(@cats) %>
+      </div>
+    <% else %>
+      <div class="flex justify-center items-center mb-4">
+        <p>登録していません<p>
+      </div>
+    <% end %>
+  </div>
+</div>
