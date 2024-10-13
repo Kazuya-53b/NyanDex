@@ -4,7 +4,12 @@
   </div>
 </div>
 
-<div class="pagination flex justify-center mt-4">
-  <%= paginate @cats, class: 'btn-group' %>
-</div>
+<div class="pgn-group flex justify-center mt-4 mb-4">
+  <div class="pagination">
+    <%= link_to_previous_page(@cats, '<', class: 'page prev') || '<span class="page prev disabled"><</span>'.html_safe %>
 
+    <span class="page-info mx-4"><%= @cats.current_page %> / <%= @cats.total_pages %> Page</span>
+
+    <%= link_to_next_page(@cats, '>', class: 'page next') || '<span class="page next disabled">></span>'.html_safe %>
+  </div>
+</div>
