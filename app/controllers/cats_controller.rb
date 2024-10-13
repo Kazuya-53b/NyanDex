@@ -5,7 +5,7 @@ class CatsController < ApplicationController
       format.html
       format.turbo_stream
     end
-  end  
+  end
 
   def new
     @cat = Cat.new
