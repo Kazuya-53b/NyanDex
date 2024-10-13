@@ -43,6 +43,7 @@ en:
       new:
         title: "ユーザー登録"
         sign_up: "登録"
+        characters_max: "文字以下"
       destroyed: "Bye! Your account has been successfully cancelled. We hope to see you again soon."
       signed_up: "ユーザー登録しました"
       signed_up_but_inactive: "You have signed up successfully. However, we could not sign you in because your account is not yet activated."

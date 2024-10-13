@@ -158,6 +158,12 @@ h2 {
   font-weight: bold;
 }
 
+.error-message ul {
+  list-style: none;
+  padding-bottom: 1rem;
+  margin: 0;
+}
+
 .space-x-button > * {
   margin-right: 8px;
 }
