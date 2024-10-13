@@ -1,6 +1,6 @@
 class CatsController < ApplicationController
-  before_action :authenticate_user!, except: [:index]
-  before_action :require_login_for_pages, only: [:index]
+  before_action :authenticate_user!, except: [ :index ]
+  before_action :require_login_for_pages, only: [ :index ]
 
   def index
     @cats = Cat.includes(:user).order(created_at: :desc).page(params[:page]).per(12)
