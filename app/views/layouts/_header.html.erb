@@ -32,18 +32,20 @@
     const dropdownButton = document.getElementById('user-icon');
     const dropdownMenu = document.getElementById('dropdown-menu');
 
-    dropdownButton.addEventListener('click', function(event) {
-      event.stopPropagation();
-      dropdownMenu.classList.toggle('hidden');
-      dropdownMenu.style.right = '0';
-    });
+    if (dropdownButton && dropdownMenu) {
+      dropdownButton.addEventListener('click', function(event) {
+        event.stopPropagation();
+        dropdownMenu.classList.toggle('hidden');
+        dropdownMenu.style.right = '0';
+      });
 
-    document.addEventListener('click', function() {
-      dropdownMenu.classList.add('hidden');
-    });
+      document.addEventListener('click', function() {
+        dropdownMenu.classList.add('hidden');
+      });
 
-    dropdownMenu.addEventListener('click', function(event) {
-      event.stopPropagation();
-    });
+      dropdownMenu.addEventListener('click', function(event) {
+        event.stopPropagation();
+      });
+    }
   });
 </script>
