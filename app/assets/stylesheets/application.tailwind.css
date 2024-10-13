@@ -285,3 +285,13 @@ h2 {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.pgn-group .pagination .prev,
+.pgn-group .pagination .next {
+  @apply bg-orange-500 text-white rounded mx-1 px-4 py-2 hover:bg-orange-600;
+}
+
+.pgn-group .pagination .prev.disabled,
+.pgn-group .pagination .next.disabled {
+  @apply opacity-40 cursor-not-allowed pointer-events-none;
+}

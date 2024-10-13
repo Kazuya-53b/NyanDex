@@ -36,6 +36,8 @@ gem "view_component"
 gem "mini_magick", "~> 4.13"
 
 gem "activesupport", "~> 7.2.1"
+
+gem "kaminari"
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
