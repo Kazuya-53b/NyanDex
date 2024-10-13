@@ -1,6 +1,6 @@
 <div id="user-info-container" class="flex flex-col items-start">
   <% if user.errors.any? %>
-    <div id class="error-message mb-4">
+    <div id class="error-message mt-4 mb-4">
       <ul class="list-disc pl-5", style="list-style-type: none; padding: 0; margin: 0;">
         <% user.errors.full_messages.each do |message| %>
           <li><%= message %></li>

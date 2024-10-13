@@ -1,6 +1,8 @@
 class CatsController < ApplicationController
   before_action :authenticate_user!, except: [ :index ]
   before_action :require_login_for_pages, only: [ :index ]
+  before_action :set_cat, only: [ :show, :edit, :update, :destroy ]
+  before_action :ensure_owner, only: [ :edit, :destroy ]
 
   def index
     @cats = Cat.includes(:user).order(created_at: :desc).page(params[:page]).per(12)
@@ -15,7 +17,6 @@ class CatsController < ApplicationController
   end
 
   def show
-    @cat = Cat.find(params[:id])
     @cat.images
   end
 
@@ -43,6 +44,11 @@ class CatsController < ApplicationController
     end
   end
 
+  def destroy
+    @cat.destroy
+    redirect_to cats_path, notice: "プロフィールを削除しました"
+  end
+
   private
 
   def cat_params
@@ -52,6 +58,16 @@ class CatsController < ApplicationController
   def require_login_for_pages
     if params[:page].present? && params[:page].to_i > 1
       authenticate_user!
+    end
+  end
+
+  def set_cat
+    @cat = Cat.find(params[:id])
+  end
+
+  def ensure_owner
+    unless @cat.user_id == current_user.id
+      redirect_to @cat, flash: { alert: "権限がありません" }
     end
   end
 

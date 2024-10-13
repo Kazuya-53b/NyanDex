@@ -2,14 +2,6 @@
   <div class="pt-6 pb-8 mb-4 w-5/6 max-w-xs sm:max-w-md mx-auto">
     <h2 class="text-center text-xl text-black-400 font-bold mb-4"><%= I18n.t('devise.sessions.new.title') %></h2>
     <%= form_with model: @user, url: new_user_session_path, local: true do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
-      <% if notice.present? %>
-        <p class="error-message"><%= notice %></p>
-      <% end %>
-  
-      <% if alert.present? %>
-        <p class="error-message"><%= alert %></p>
-      <% end %>
 
       <div class="mb-4">
         <%= f.label :email, t('form.labels.email'),class: "block text-gray-700 text-sm font-bold mb-2" %>
