@@ -1,4 +1,7 @@
 class CatsController < ApplicationController
+  before_action :authenticate_user!, except: [ :index ]
+  before_action :require_login_for_pages, only: [ :index ]
+
   def index
     @cats = Cat.includes(:user).order(created_at: :desc).page(params[:page]).per(12)
     respond_to do |format|
@@ -46,6 +49,12 @@ class CatsController < ApplicationController
     params.require(:cat).permit(:name, :gender, :age, :breed, :color, :pattern, :short_description, :long_description, images: [])
   end
 
+  def require_login_for_pages
+    if params[:page].present? && params[:page].to_i > 1
+      authenticate_user!
+    end
+  end
+
   def upload_images_to_s3(cat, crop_params)
     s3 = Aws::S3::Resource.new(region: ENV["AWS_REGION"])
     image_urls = []
@@ -67,7 +76,6 @@ class CatsController < ApplicationController
 
         image_urls << obj.public_url
       rescue => e
-        # エラーハンドリング（適宜）
       end
     end
 
