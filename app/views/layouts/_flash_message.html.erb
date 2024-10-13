@@ -2,4 +2,8 @@
   <div id="flash-message" class="bg-green-500 text-white rounded p-2 shadow-lg mt-5">
     <%= flash[:notice] %>
   </div>
+<% elsif flash[:alert].present? %>
+  <div id="flash-message" class="bg-red-500 text-white rounded p-2 shadow-lg mt-5">
+    <%= flash[:alert] %>
+  </div>
 <% end %>
