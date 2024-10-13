@@ -25,7 +25,7 @@ class UsersController < ApplicationController
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace("user-info-container", partial: "users/edit_username", locals: { user: @user })
         end
-        format.html { render :edit }
+        format.html { render :show }
       end
     end
   end
