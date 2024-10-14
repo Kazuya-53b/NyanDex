@@ -1,7 +1,7 @@
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <div class="flex items-center justify-center mb-4">
-  <h2 class="text-xl text-black-400 font-bold">
+  <h2 class="text-xl text-gray-400 font-bold">
     「<%= @cat.name %>」 のプロフィール
   </h2>
   
@@ -132,31 +132,34 @@
       const mainSwiper = new Swiper(mainSwiperContainer, mainSwiperOptions);
     }
 
-    const deleteButtons = document.querySelectorAll('.delete-button');
+    const gearButton = document.getElementById('gear-button');
 
+    // gear-buttonが存在する場合のみイベントリスナーを追加
+    if (gearButton) {
+      gearButton.addEventListener('click', function(event) {
+        const hiddenButtons = document.getElementById('hidden-buttons');
+        hiddenButtons.classList.toggle('hidden');
+        event.stopPropagation(); // 親要素へのクリック伝播を防ぐ
+      });
+    }
+
+    // 外をクリックしたときにボタンを隠す
+    window.addEventListener('click', function(event) {
+      const hiddenButtons = document.getElementById('hidden-buttons');
+      if (!event.target.closest('#gear-button') && !event.target.closest('#hidden-buttons')) {
+        hiddenButtons.classList.add('hidden');
+      }
+    });
+
+    // 削除ボタンのイベントリスナー
+    const deleteButtons = document.querySelectorAll('.delete-button');
     deleteButtons.forEach(function(button) {
       button.addEventListener('click', function(event) {
-        // 確認ダイアログを表示
         const confirmed = confirm(button.dataset.confirm);
         if (!confirmed) {
-        event.preventDefault(); // ユーザーがキャンセルした場合、デフォルトの動作を防ぐ
+          event.preventDefault(); // キャンセル時の動作防止
         }
       });
     });
-  });
-
-  document.getElementById('gear-button').addEventListener('click', function(event) {
-    const hiddenButtons = document.getElementById('hidden-buttons');
-    // ボタンの表示/非表示をトグル
-    hiddenButtons.classList.toggle('hidden');
-    event.stopPropagation(); // 親要素へのクリック伝播を防ぐ
-  });
-
-  // 外をクリックしたときにボタンを隠す
-  window.addEventListener('click', function(event) {
-    const hiddenButtons = document.getElementById('hidden-buttons');
-    if (!event.target.closest('#gear-button') && !event.target.closest('#hidden-buttons')) {
-      hiddenButtons.classList.add('hidden');
-    }
   });
 </script>

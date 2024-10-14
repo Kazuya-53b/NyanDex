@@ -15,8 +15,8 @@ class CatCardComponent < ViewComponent::Base
           end,
           content_tag(:div, class: "flex justify-center space-x-card-status") do
             safe_join([
-              content_tag(:div, class: "status-box cat-name") do
-                content_tag(:h3, @cat.name, class: "font-bold text-gray-500")
+              content_tag(:div, class: "status-box cat-name font-bold text-gray-500") do
+                content_tag(:h3, @cat.name)
               end,
               content_tag(:div, class: "cat-info") do
                 safe_join([
@@ -30,5 +30,5 @@ class CatCardComponent < ViewComponent::Base
         ])
       end
     end
-  end
+  end  
 end
