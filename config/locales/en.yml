@@ -21,8 +21,8 @@ en:
       breed: "種類"
       color: "毛色"
       pattern: "模様"
-      short_description: "にゃんこ紹介（一覧）"
-      long_description: "にゃんこ紹介（詳細）"
+      short_description: "にゃんこ紹介（サムネイル用）"
+      long_description: "にゃんこ紹介（詳細ページ用）"
   users:
     show:
       title: "ユーザー設定"
