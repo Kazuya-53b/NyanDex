@@ -86,6 +86,10 @@ h2 {
   border-radius: 0.5rem;
 }
 
+.cat-name, .cat-age, .cat-gender, .short-comment-box {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
 .short-comment-box {
   height: 5rem;
   overflow: hidden;
