@@ -46,7 +46,7 @@ class CatsController < ApplicationController
 
   def destroy
     @cat.destroy
-    redirect_to cats_path, notice: "プロフィールを削除しました"
+    redirect_to mypage_user_path(current_user), notice: "プロフィールを削除しました"
   end
 
   private

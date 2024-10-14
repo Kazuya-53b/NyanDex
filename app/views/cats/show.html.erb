@@ -1,11 +1,27 @@
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<div class="items-center justify-center">
-  <h2 class="text-center text-xl text-black-400 font-bold mb-4">
+<div class="flex items-center justify-center mb-4">
+  <h2 class="text-xl text-black-400 font-bold">
     「<%= @cat.name %>」 のプロフィール
   </h2>
+  
+  <% if @cat.user_id == current_user.id %>
+    <div class="ml-2 mb-4 relative">
+      <button class="focus:outline-none" id="gear-button">
+        <i class="fa fa-cog fa-lg text-gray-500"></i>
+      </button>
 
-  <div id="cat-images" data-total-images="<%= @cat.images.size %>"></div>
+      <div id="hidden-buttons" class="hidden absolute right-0 mt-2 w-24 bg-white rounded-lg shadow-lg z-10">
+        <div class="py-2">
+        <%= link_to '編集', edit_cat_path(@cat), class: 'block w-24 px-4 py-2 text-gray-600 font-bold bg-white hover:bg-gray-200 flex items-center justify-center' %>
+        <%= button_to '削除', cat_path(@cat), method: :delete, data: { confirm: '本当に削除しますか?' }, class: 'delete-button block w-24 px-4 py-2 text-white font-bold bg-red-500 hover:bg-red-700 flex items-center justify-center' %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div id="cat-images" data-total-images="<%= @cat.images.size %>"></div>
   
   <!-- Main Swiper -->
   <div class="swiper-container main-swiper">
@@ -24,7 +40,7 @@
   </div>
 
   <!-- Thumbnail Swiper -->
-  <% if @cat.images.size > 1 %> <!-- 画像が2枚以上の時のみ表示 -->
+  <% if @cat.images.size > 1 %>
     <div class="swiper-container thumb-swiper" style="margin-top: 20px;">
       <div class="swiper-wrapper">
         <% @cat.images.each do |image_url| %>
@@ -67,7 +83,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", function() {
     const mainSwiperContainer = document.querySelector('.main-swiper');
     const thumbSwiperContainer = document.querySelector('.thumb-swiper');
 
@@ -115,5 +131,32 @@ document.addEventListener("DOMContentLoaded", function() {
 
       const mainSwiper = new Swiper(mainSwiperContainer, mainSwiperOptions);
     }
-});
+
+    const deleteButtons = document.querySelectorAll('.delete-button');
+
+    deleteButtons.forEach(function(button) {
+      button.addEventListener('click', function(event) {
+        // 確認ダイアログを表示
+        const confirmed = confirm(button.dataset.confirm);
+        if (!confirmed) {
+        event.preventDefault(); // ユーザーがキャンセルした場合、デフォルトの動作を防ぐ
+        }
+      });
+    });
+  });
+
+  document.getElementById('gear-button').addEventListener('click', function(event) {
+    const hiddenButtons = document.getElementById('hidden-buttons');
+    // ボタンの表示/非表示をトグル
+    hiddenButtons.classList.toggle('hidden');
+    event.stopPropagation(); // 親要素へのクリック伝播を防ぐ
+  });
+
+  // 外をクリックしたときにボタンを隠す
+  window.addEventListener('click', function(event) {
+    const hiddenButtons = document.getElementById('hidden-buttons');
+    if (!event.target.closest('#gear-button') && !event.target.closest('#hidden-buttons')) {
+      hiddenButtons.classList.add('hidden');
+    }
+  });
 </script>
