@@ -30,5 +30,5 @@ class CatCardComponent < ViewComponent::Base
         ])
       end
     end
-  end  
+  end
 end
