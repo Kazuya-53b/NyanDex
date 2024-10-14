@@ -20,7 +20,7 @@ class CatCardComponent < ViewComponent::Base
               end,
               content_tag(:div, class: "cat-info") do
                 safe_join([
-                  content_tag(:p, "#{@cat.age}歳", class: "status-box font-bold text-gray-500 cat-age"),
+                  content_tag(:p, "#{@cat.age}才", class: "status-box font-bold text-gray-500 cat-age"),
                   content_tag(:p, @cat.gender, class: "status-box font-bold text-gray-500 cat-gender")
                 ])
               end

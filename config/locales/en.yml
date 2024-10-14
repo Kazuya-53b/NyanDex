@@ -29,6 +29,8 @@ en:
     mypage:
       title: "マイページ"
   cats:
+    index:
+      title: "みんなのにゃんこ一覧"
     new:
       title: "マイにゃんこ登録"
     edit:
