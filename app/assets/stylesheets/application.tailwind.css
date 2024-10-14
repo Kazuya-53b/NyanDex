@@ -21,6 +21,22 @@
   text-align: center;
 }
 
+.icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  overflow: hidden;
+}
+
+.icon-wrapper img {
+  height: 100%;
+  width: auto;
+}
+
 h2 {
   font-family: 'M PLUS Rounded 1c', sans-serif;
   color: #ff6b81;
@@ -88,6 +104,7 @@ h2 {
 
 .cat-name, .cat-age, .cat-gender, .short-comment-box {
   font-family: 'M PLUS Rounded 1c', sans-serif;
+  color: #cf4c1c;
 }
 
 .short-comment-box {

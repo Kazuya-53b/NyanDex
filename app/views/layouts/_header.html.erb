@@ -1,7 +1,11 @@
 <div class="flex items-center h-full">
-  <h1 class="text-xl font-bold ml-5">
-    <a href="<%= root_path %>" data-turbo="false">NyanDex</a>
-  </h1>
+  <a href="<%= root_path %>" data-turbo="false" class="flex items-center">
+    <div class="icon-wrapper ml-2 mr-1">
+      <img src="<%= asset_path('icon.svg') %>" alt="Icon" class="h-8 w-8">
+    </div>
+    <h1 class="text-xl" style="font-family: 'Pacifico', cursive;">NyanDex</h1>
+  </a>
+
   <% if user_signed_in? %>
     <nav class="flex items-center ml-auto space-x-8">
       <div>
@@ -18,7 +22,7 @@
     </nav>
   <% else %>
     <nav class="flex items-center ml-auto space-x-8">
-      <ul class="flex space-x-8">
+      <ul class="flex space-x-4 xs:space-x-8">
         <li><%= link_to 'ユーザー登録', new_user_registration_path, class: 'hover:text-gray-400' %></li>
         <li><%= link_to 'ログイン', new_user_session_path, class: 'hover:text-gray-400' %></li>
         <span class="mx-4"></span>
