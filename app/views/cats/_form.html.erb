@@ -1,14 +1,4 @@
 <%= form_with(model: @cat, local: true, html: { multipart: true }) do |form| %>
-  <% if @cat.errors.any? %>
-    <div class="error-message mb-4">
-      <ul class="list-disc pl-5" style="list-style-type: none; padding: 0; margin: 0;">
-        <% @cat.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
   <!-- Step 1: 画像トリミング -->
   <div id="step-1" class="p-6 bg-white border-4 border-gray-300 rounded-lg mb-6 w-5/6 sm:w-full mx-auto box-border">
     <div class="mb-4 relative">
@@ -42,18 +32,18 @@
   <!-- Step 2: 猫の情報入力 -->
   <div id="step-2" style="display: none;" class="pt-5 pb-5 pl-10 pr-10 bg-white border-4 border-gray-200 rounded-lg mx-5 mb-6">
     <div class="mb-4">
-      <%= form.label :name, t('form.labels.name'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
+      <%= form.label :name, "#{t('form.labels.name')} <span class='text-red-500 text-xs'>※必須</span>".html_safe, class: 'block text-gray-700 text-sm font-bold mb-2' %>
       <%= form.text_field :name, class: 'w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-indigo-500' %>
     </div>
 
     <div class="mb-4">
-      <%= form.label :gender, t('form.labels.gender'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
-      <%= form.text_field :gender, class: 'w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-indigo-500' %>
+      <%= form.label :age, "#{t('form.labels.age')} <span class='text-red-500 text-xs'>※必須</span>".html_safe, class: 'block text-gray-700 text-sm font-bold mb-2' %>
+      <%= form.select :age, (0..25).to_a.map { |age| [age, age] }, { include_blank: true }, class: 'w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-indigo-500' %>
     </div>
 
     <div class="mb-4">
-      <%= form.label :age, t('form.labels.age'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
-      <%= form.number_field :age, class: 'w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-indigo-500' %>
+      <%= form.label :gender, "#{t('form.labels.gender')} <span class='text-red-500 text-xs'>※必須</span>".html_safe, class: 'block text-gray-700 text-sm font-bold mb-2' %>
+      <%= form.select :gender, [['オス♂', 'オス♂'], ['メス♀', 'メス♀']], { include_blank: true }, class: 'w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-indigo-500' %>
     </div>
 
     <div class="mb-4">
@@ -72,12 +62,12 @@
     </div>
 
     <div class="mb-4">
-      <%= form.label :short_description, t('form.labels.short_description'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
+      <%= form.label :short_description, "#{t('form.labels.short_description')} <span class='text-red-500 text-xs'>※必須</span>".html_safe, class: 'block text-gray-700 text-sm font-bold mb-2' %>
       <%= form.text_area :short_description, class: 'w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-indigo-500' %>
     </div>
 
     <div class="mb-4">
-      <%= form.label :long_description, t('form.labels.long_description'), class: 'block text-gray-700 text-sm font-bold mb-2' %>
+      <%= form.label :long_description, "#{t('form.labels.long_description')} <span class='text-red-500 text-xs'>※必須</span>".html_safe, class: 'block text-gray-700 text-sm font-bold mb-2' %>
       <%= form.text_area :long_description, class: 'w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-indigo-500' %>
     </div>
 
@@ -85,7 +75,7 @@
       戻る
     </button>
 
-    <%= form.submit '猫を登録', id: 'submit-button', class: 'bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2' %>
+    <%= form.submit '登録する', id: 'submit-button', class: 'bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2' %>
 
     <div id="loading-indicator" style="display: none;" class="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
       <div class="loader border-4 border-t-4 border-gray-200 rounded-full w-16 h-16 animate-spin"></div>
@@ -149,6 +139,8 @@
       nextStepButton1.addEventListener('click', function() {
           if (croppedImages.length === 0) {
               alert('画像を選択してください');
+          } else if (croppedImages.length >= 9) {
+              alert('画像は8枚以下にしてください');
           } else {
               step1.style.display = 'none';
               step2.style.display = 'block';
@@ -172,9 +164,18 @@
               longDescription: document.querySelector('[name="cat[long_description]"]')
           };
 
+          const fieldNames = {
+              name: '名前',
+              age: '年齢',
+              gender: '性別',
+              shortDescription: 'にゃんこ紹介（サムネイル用）',
+              longDescription: 'にゃんこ紹介（詳細ページ用）'
+          };
+
+
           for (const [key, field] of Object.entries(fields)) {
               if (!field.value.trim()) {
-                  alert(`${key}を入力してください`);
+                  alert(`${fieldNames[key]}を入力してください`);
                   event.preventDefault();
                   return;
               }
