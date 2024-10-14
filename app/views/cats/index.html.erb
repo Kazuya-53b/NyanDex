@@ -1,3 +1,7 @@
+<h2 class="text-center text-xl text-black-400 font-bold mb-5">
+  <%= I18n.t('cats.index.title') %>
+</h2>
+
 <div class="container mx-auto px-8 max-w-screen-lg mb-10">
   <div class="grid gap-2 grid-cols-2 md:gap-4 md:grid-cols-3">
     <%= render CatCardComponent.with_collection(@cats) %>
