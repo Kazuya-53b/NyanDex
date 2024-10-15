@@ -1,6 +1,9 @@
 {
   "name": "app",
   "private": true,
+  "engines": {
+    "node": "20.x"
+  },
   "devDependencies": {
     "esbuild": "^0.24.0"
   },
