@@ -8,19 +8,22 @@
         <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
       </div>
 
-      <div class="mb-4">
+      <div class="mb-8">
         <%= f.label :password, t('form.labels.password'), class: "block text-gray-700 text-sm font-bold mb-0" %>
         <% if @minimum_password_length %>
           <span class="text-gray-700 text-sm">(<%= "#{@minimum_password_length} #{t('devise.passwords.new.characters_minimum')}" %>)</span>
         <% end %>
         <%= f.password_field :password, autocomplete: "new-password", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
       </div>
+
+      <!-- MVPでは未実装なので非表示、パスワードフォームのmbを4から8に変更
       <div class="flex justify-between mb-4">
         <div></div>
         <a class="inline-block align-baseline font-bold text-sm text-orange-500 hover:text-orange-300" href="#">
           <%= I18n.t('devise.passwords.new.forgot_password') %>
         </a>
       </div>
+      -->
 
       <div class="flex justify-center mb-4">
         <%= f.submit t('devise.sessions.new.sign_in'), class: "bg-orange-500 hover:bg-orange-300 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
