@@ -143,7 +143,7 @@ GEM
     ffi (1.17.0-x86-linux-gnu)
     ffi (1.17.0-x86_64-darwin)
     ffi (1.17.0-x86_64-linux-gnu)
-    fog-aws (3.27.0)
+    fog-aws (3.28.0)
       base64 (~> 0.2.0)
       fog-core (~> 2.1)
       fog-json (~> 1.1)
@@ -401,7 +401,7 @@ DEPENDENCIES
   debug
   devise
   dotenv-rails
-  fog-aws (~> 3.0)
+  fog-aws (~> 3.28)
   font-awesome-sass (~> 6.5.2)
   hotwire-rails
   jbuilder
