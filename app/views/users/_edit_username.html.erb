@@ -1,6 +1,6 @@
 <div id="user-info-container" class="flex flex-col items-start">
   <% if user.errors.any? %>
-    <div id class="error-message mt-4 mb-4">
+    <div class="error-message mt-4 mb-4">
       <ul class="list-disc pl-5", style="list-style-type: none; padding: 0; margin: 0;">
         <% user.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -25,7 +25,7 @@
   <div id="edit-form" style="display: none;">
     <%= form_with(model: user, local: false, url: update_username_user_path(user), method: :patch, id: "name-form", data: { turbo_temporary: "false" }) do |f| %>
       <div class="flex gap-2 items-center justify-content-center w-full">
-        <%= f.text_field :username, value: user.username, class: "border-2 rounded p-2 text-center inline-block w-full", style: "display: inline-block;" %>
+        <%= f.text_field :username, value: user.username, class: "border-2 border-black rounded p-2 text-center inline-block w-full", style: "display: inline-block;" %>
         <%= f.submit '更新', class: "bg-orange-500 text-white p-2 rounded font-bold flex-shrink-0 w-1/6" %>
         <button type="button" onclick="cancelEdit()" class="bg-gray-300 text-black-400 p-2 rounded font-bold flex-shrink-0 w-1/6">戻る</button>
       </div>
