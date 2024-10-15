@@ -52,8 +52,6 @@ h2 {
   border-radius: 9999px;
   object-fit: cover;
   border: 4px solid #78BBE6;
-  margin-right: 2rem;
-  overflow: hidden;
 }
 
 .image-container {
