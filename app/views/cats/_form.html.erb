@@ -111,8 +111,10 @@
 
         event.preventDefault(); // フォーム送信をキャンセル
         
-        // バリデーション処理をここに追加する
-
+        // ローディングインジケーターを表示
+        const loadingIndicator = document.getElementById('loading-indicator');
+        loadingIndicator.style.display = 'flex';
+        
         const dataTransfer = new DataTransfer();
   
         // トリミングされた画像のみを追加
