@@ -94,250 +94,238 @@
     const myForm = document.querySelector('form');  
     let formSubmitted = false;  
 
-    // ページ離脱時の確認
-    function handleBeforeUnload(event) {
-        if (!formSubmitted) { // フォームが送信されていない場合のみ確認
+    // 離脱確認の設定
+    window.addEventListener('beforeunload', function(event) {
+        if (!formSubmitted) {
             event.preventDefault();
-            event.returnValue = ''; // Chromeに必要な設定
+            event.returnValue = ''; // 一部のブラウザではこの行が必要
         }
-    }
-
-    // ユーザー操作があった場合に`beforeunload`イベントリスナーを追加
-    window.addEventListener('click', function() {
-        window.addEventListener('beforeunload', handleBeforeUnload);
     });
 
-    // フォーム送信時の処理
-    myForm.addEventListener('submit', function(event) {
+    myForm.addEventListener('submit', async function(event) {
+        // 送信確認のダイアログを表示
         if (!confirm("フォームを送信してもよろしいですか？")) {
             event.preventDefault(); // フォーム送信をキャンセル
-        } else {
-            formSubmitted = true; // フォームが送信された
-            // 送信後はbeforeunloadイベントを解除
-            window.removeEventListener('beforeunload', handleBeforeUnload);
+            return; // ここで処理を終了
+        }
 
-            // ローディングインジケーターを表示
-            document.getElementById('loading-indicator').style.display = 'flex';
+        event.preventDefault(); // フォーム送信をキャンセル
+        
+        // バリデーション処理をここに追加する
+
+        const dataTransfer = new DataTransfer();
+  
+        // トリミングされた画像のみを追加
+        await Promise.all(croppedImages.map(async (base64Data) => {
+            const response = await fetch(base64Data);
+            const blob = await response.blob();
+            const file = new File([blob], `cropped_image_${Date.now()}_${Math.random()}.jpg`, { type: 'image/jpeg' });
+            dataTransfer.items.add(file);
+        }));
+
+        document.getElementById('cat_images').files = dataTransfer.files;
+
+        // 送信成功のフラグを立てる
+        formSubmitted = true;
+
+        // 最後にフォームを送信
+        myForm.submit();
+    });
+
+    // ページが読み込まれたときにリセットする
+    window.addEventListener('load', function() {
+        if (shouldReset) {
+            myForm.reset(); 
+            document.getElementById('cat_images').value = ''; 
+            croppedImages.length = 0; 
         }
     });
 
-      // ページが読み込まれたときにリセットする
-      window.addEventListener('load', function() {
-          if (shouldReset) {
-              myForm.reset(); 
-              document.getElementById('cat_images').value = ''; 
-              croppedImages.length = 0; 
-          }
-      });
+    const step1 = document.getElementById('step-1');
+    const step2 = document.getElementById('step-2');
+    const nextStepButton1 = document.getElementById('next-step-button-1');
+    const prevStepButton2 = document.getElementById('prev-step-button-2');
 
-      const step1 = document.getElementById('step-1');
-      const step2 = document.getElementById('step-2');
-      const nextStepButton1 = document.getElementById('next-step-button-1');
-      const prevStepButton2 = document.getElementById('prev-step-button-2');
+    // ステップの切り替え
+    nextStepButton1.addEventListener('click', function() {
+        if (croppedImages.length === 0) {
+            alert('画像を選択してください');
+        } else if (croppedImages.length >= 9) {
+            alert('画像は8枚以下にしてください');
+        } else {
+            step1.style.display = 'none';
+            step2.style.display = 'block';
+        }
+    });
 
-      // ステップの切り替え
-      nextStepButton1.addEventListener('click', function() {
-          if (croppedImages.length === 0) {
-              alert('画像を選択してください');
-          } else if (croppedImages.length >= 9) {
-              alert('画像は8枚以下にしてください');
-          } else {
-              step1.style.display = 'none';
-              step2.style.display = 'block';
-          }
-      });
+    prevStepButton2.addEventListener('click', function() {
+        step2.style.display = 'none';
+        step1.style.display = 'block';
+    });
 
-      prevStepButton2.addEventListener('click', function() {
-          step2.style.display = 'none';
-          step1.style.display = 'block';
-      });
+    const submitButton = document.getElementById('submit-button');
 
-      const submitButton = document.getElementById('submit-button');
+    // 必須項目のバリデーション
+    submitButton.addEventListener('click', function (event) {
+        const fields = {
+            name: document.querySelector('[name="cat[name]"]'),
+            age: document.querySelector('[name="cat[age]"]'),
+            gender: document.querySelector('[name="cat[gender]"]'),
+            shortDescription: document.querySelector('[name="cat[short_description]"]'),
+            longDescription: document.querySelector('[name="cat[long_description]"]')
+        };
 
-      // 必須項目のバリデーション
-      submitButton.addEventListener('click', function (event) {
-          const fields = {
-              name: document.querySelector('[name="cat[name]"]'),
-              age: document.querySelector('[name="cat[age]"]'),
-              gender: document.querySelector('[name="cat[gender]"]'),
-              shortDescription: document.querySelector('[name="cat[short_description]"]'),
-              longDescription: document.querySelector('[name="cat[long_description]"]')
-          };
+        const fieldNames = {
+            name: '名前',
+            age: '年齢',
+            gender: '性別',
+            shortDescription: 'にゃんこ紹介（サムネイル用）',
+            longDescription: 'にゃんこ紹介（詳細ページ用）'
+        };
 
-          const fieldNames = {
-              name: '名前',
-              age: '年齢',
-              gender: '性別',
-              shortDescription: 'にゃんこ紹介（サムネイル用）',
-              longDescription: 'にゃんこ紹介（詳細ページ用）'
-          };
+        for (const [key, field] of Object.entries(fields)) {
+            if (!field.value.trim()) {
+                alert(`${fieldNames[key]}を入力してください`);
+                event.preventDefault();
+                return;
+            }
+        }
+    });
 
+    document.getElementById('cat_images').addEventListener('change', function(event) {
+        const files = event.target.files;
+        if (files.length > 0) {
+            currentIndex = 0; 
+            originalFile = files[currentIndex]; 
+            loadImage(originalFile); 
+        }
+    });
 
-          for (const [key, field] of Object.entries(fields)) {
-              if (!field.value.trim()) {
-                  alert(`${fieldNames[key]}を入力してください`);
-                  event.preventDefault();
-                  return;
-              }
-          }
-      });
+    function loadImage(file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = document.getElementById('image-preview');
+            img.src = e.target.result;
 
-      document.getElementById('cat_images').addEventListener('change', function(event) {
-          const files = event.target.files;
-          if (files.length > 0) {
-              currentIndex = 0; 
-              originalFile = files[currentIndex]; 
-              loadImage(originalFile); 
-          }
-      });
+            // Cropperのインスタンスを破棄
+            cropper?.destroy();
 
-      function loadImage(file) {
-          const reader = new FileReader();
-          reader.onload = function(e) {
-              const img = document.getElementById('image-preview');
-              img.src = e.target.result;
+            // Cropperの初期化
+            cropper = new Cropper(img, {
+                aspectRatio: 1, 
+                viewMode: 1,
+                autoCropArea: 1,
+                responsive: true,
+                ready: function () {
+                    const imageData = cropper.getImageData();
+                    const cropBoxData = {
+                        left: (imageData.naturalWidth - imageData.naturalHeight) / 2,
+                        top: 0,
+                        width: imageData.naturalHeight,
+                        height: imageData.naturalHeight,
+                    };
+                    cropper.setCropBoxData(cropBoxData);
+                    scrollToPreview();
+                },
+            });
 
-              // Cropperのインスタンスを破棄
-              cropper?.destroy();
+            document.getElementById('image-preview-container').style.display = 'block'; 
+            document.getElementById('crop-button').style.display = 'block'; 
+        };
+        reader.readAsDataURL(file); 
+    }
 
-              // Cropperの初期化
-              cropper = new Cropper(img, {
-                  aspectRatio: 1, 
-                  viewMode: 1,
-                  autoCropArea: 1,
-                  responsive: true,
-                  ready: function () {
-                      const imageData = cropper.getImageData();
-                      const cropBoxData = {
-                          left: (imageData.naturalWidth - imageData.naturalHeight) / 2,
-                          top: 0,
-                          width: imageData.naturalHeight,
-                          height: imageData.naturalHeight,
-                      };
-                      cropper.setCropBoxData(cropBoxData);
-                      scrollToPreview();
-                  },
-              });
+    function scrollToPreview() {
+        const previewContainer = document.getElementById('image-preview-container');
+        const rect = previewContainer.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
 
-              document.getElementById('image-preview-container').style.display = 'block'; 
-              document.getElementById('crop-button').style.display = 'block'; 
-          };
-          reader.readAsDataURL(file); 
-      }
+        const scrollTop = rect.top + window.pageYOffset - (windowHeight / 2) + (rect.height / 2);
+        window.scrollTo({
+            top: scrollTop,
+            behavior: 'smooth'
+        });
+    }
 
-      function scrollToPreview() {
-          const previewContainer = document.getElementById('image-preview-container');
-          const rect = previewContainer.getBoundingClientRect();
-          const windowHeight = window.innerHeight;
+    document.getElementById('crop-button').addEventListener('click', function() {
+        if (cropper && originalFile) {
+            const imageData = cropper.getImageData();
+            const originalWidth = imageData.naturalWidth;
+            const originalHeight = imageData.naturalHeight;
+            const croppedSize = Math.min(originalWidth, originalHeight);
 
-          const scrollTop = rect.top + window.pageYOffset - (windowHeight / 2) + (rect.height / 2);
-          window.scrollTo({
-              top: scrollTop,
-              behavior: 'smooth'
-          });
-      }
+            cropper.getCroppedCanvas({
+                width: croppedSize,
+                height: croppedSize
+            }).toBlob((blob) => {
+                if (!blob) {
+                    console.error('トリミングに失敗しました。blobがnullです。');
+                    return;
+                }
+                const fileReader = new FileReader();
+                fileReader.onload = function() {
+                    const base64Data = fileReader.result;  
+                    croppedImages.push(base64Data);  
+                    document.getElementById('cropped_images_data').value = JSON.stringify(croppedImages);
 
-      document.getElementById('crop-button').addEventListener('click', function() {
-          if (cropper && originalFile) {
-              // 元の画像サイズを取得
-              const imageData = cropper.getImageData();
-              const originalWidth = imageData.naturalWidth;
-              const originalHeight = imageData.naturalHeight;
+                    displayCroppedImage(base64Data);
+                    document.getElementById('image-preview-container').style.display = 'none';
+                    document.getElementById('crop-button').style.display = 'none';
 
-              // 正方形にトリミングするためのサイズを決定
-              const croppedSize = Math.min(originalWidth, originalHeight);
+                    if (currentIndex < document.getElementById('cat_images').files.length - 1) {
+                        currentIndex++;
+                        originalFile = document.getElementById('cat_images').files[currentIndex];
+                        loadImage(originalFile);
+                    } else {
+                        document.getElementById('preview-list').style.display = 'block';
+                    }
+                };
+                fileReader.readAsDataURL(blob);
+            }, 'image/jpeg', 1); 
+        }
+    });
 
-              cropper.getCroppedCanvas({
-                  width: croppedSize,
-                  height: croppedSize
-              }).toBlob((blob) => {
-                  if (!blob) {
-                      console.error('トリミングに失敗しました。blobがnullです。');
-                      return;
-                  }
-                  const fileReader = new FileReader();
-                  fileReader.onload = function() {
-                      const base64Data = fileReader.result;  
-                      croppedImages.push(base64Data);  
-                      document.getElementById('cropped_images_data').value = JSON.stringify(croppedImages);
+    function displayCroppedImage(base64Data) {
+        const previewContainer = document.getElementById('cropped-images');
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative'; 
+        wrapper.style.display = 'inline-block'; 
+        wrapper.style.marginRight = '10px'; 
 
-                      displayCroppedImage(base64Data);
-                      document.getElementById('image-preview-container').style.display = 'none';
-                      document.getElementById('crop-button').style.display = 'none';
+        const imgElement = document.createElement('img');
+        imgElement.src = base64Data;
+        imgElement.style.maxWidth = '100px';
 
-                      // 次の画像があればロード
-                      if (currentIndex < document.getElementById('cat_images').files.length - 1) {
-                          currentIndex++;
-                          originalFile = document.getElementById('cat_images').files[currentIndex];
-                          loadImage(originalFile);
-                      } else {
-                          document.getElementById('preview-list').style.display = 'block';
-                      }
-                  };
-                  fileReader.readAsDataURL(blob);
-              }, 'image/jpeg', 1); // ここでJPEG形式で最大品質を指定
-          }
-      });
+        const trashButton = createTrashButton(base64Data, wrapper);
+        wrapper.appendChild(imgElement);
+        wrapper.appendChild(trashButton);
+        previewContainer.appendChild(wrapper);
+    }
 
-      function displayCroppedImage(base64Data) {
-          const previewContainer = document.getElementById('cropped-images');
-          const wrapper = document.createElement('div');
-          wrapper.style.position = 'relative'; 
-          wrapper.style.display = 'inline-block'; 
-          wrapper.style.marginRight = '10px'; 
+    function createTrashButton(base64Data, wrapper) {
+        const trashButton = document.createElement('button');
+        trashButton.innerHTML = '<i class="fas fa-trash"></i>'; 
+        trashButton.style.position = 'absolute'; 
+        trashButton.style.bottom = '0px';
+        trashButton.style.right = '0px';
+        trashButton.style.border = 'none';
+        trashButton.style.backgroundColor = 'red'; 
+        trashButton.style.color = 'white'; 
+        trashButton.style.cursor = 'pointer';
+        trashButton.style.zIndex = '10'; 
+        trashButton.style.borderRadius = '2px'; 
+        trashButton.style.padding = '2px 2px'; 
 
-          const imgElement = document.createElement('img');
-          imgElement.src = base64Data;
-          imgElement.style.maxWidth = '100px';
+        trashButton.addEventListener('click', function() {
+            const index = croppedImages.indexOf(base64Data);
+            if (index > -1) {
+                croppedImages.splice(index, 1);
+                document.getElementById('cropped_images_data').value = JSON.stringify(croppedImages);
+                wrapper.parentNode.removeChild(wrapper);
+            }
+        });
 
-          const trashButton = createTrashButton(base64Data, wrapper);
-          wrapper.appendChild(imgElement);
-          wrapper.appendChild(trashButton);
-          previewContainer.appendChild(wrapper);
-      }
-
-      function createTrashButton(base64Data, wrapper) {
-          const trashButton = document.createElement('button');
-          trashButton.innerHTML = '<i class="fas fa-trash"></i>'; 
-          trashButton.style.position = 'absolute'; 
-          trashButton.style.bottom = '0px';
-          trashButton.style.right = '0px';
-          trashButton.style.border = 'none';
-          trashButton.style.backgroundColor = 'red'; 
-          trashButton.style.color = 'white'; 
-          trashButton.style.cursor = 'pointer';
-          trashButton.style.zIndex = '10'; 
-          trashButton.style.borderRadius = '2px'; 
-          trashButton.style.padding = '2px 2px'; 
-
-          trashButton.addEventListener('click', function() {
-              const index = croppedImages.indexOf(base64Data);
-              if (index > -1) {
-                  croppedImages.splice(index, 1);
-                  document.getElementById('cropped_images_data').value = JSON.stringify(croppedImages);
-                  wrapper.parentNode.removeChild(wrapper);
-              }
-          });
-
-          return trashButton;
-      }
-
-      document.querySelector('form').addEventListener('submit', async function(event) {
-          event.preventDefault(); 
-
-          const dataTransfer = new DataTransfer();
-  
-          // トリミングされた画像のみを追加
-          await Promise.all(croppedImages.map(async (base64Data) => {
-              const response = await fetch(base64Data);
-              const blob = await response.blob();
-              const file = new File([blob], `cropped_image_${Date.now()}_${Math.random()}.jpg`, { type: 'image/jpeg' }); // ここでファイル形式をJPEGに変更
-              dataTransfer.items.add(file);
-          }));
-
-          document.getElementById('cat_images').files = dataTransfer.files;
-
-          event.target.submit();
-      });
+        return trashButton;
+    }
   });
 </script>
