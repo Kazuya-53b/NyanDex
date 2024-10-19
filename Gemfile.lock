@@ -253,7 +253,6 @@ GEM
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.1.7)
-    rack-rewrite (1.5.1)
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rack-test (2.1.0)
@@ -411,7 +410,6 @@ DEPENDENCIES
   mini_magick (~> 4.13)
   mysql2 (~> 0.5)
   puma (>= 5.0)
-  rack-rewrite
   rails (~> 7.2.1)
   rubocop-rails-omakase
   selenium-webdriver

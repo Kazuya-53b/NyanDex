@@ -99,8 +99,4 @@ Rails.application.configure do
   # ]
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
-
-  config.middleware.use Rack::Rewrite do
-    r301 %r{.*}, 'https://www.nyandexapp.com$&', if: Proc.new { |rack_env| rack_env['SERVER_NAME'] == 'nyandexapp.com' }
-  end
 end
