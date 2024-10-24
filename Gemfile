@@ -40,6 +40,9 @@ gem "activesupport", "~> 7.2.1"
 
 gem "kaminari"
 
+gem "omniauth-google-oauth2"
+
+gem "rack-cors", require: "rack/cors"
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
