@@ -8,6 +8,7 @@ class User < ApplicationRecord
          :omniauthable, omniauth_providers: %i[google_oauth2]
 
   has_many :cats, dependent: :destroy
+  has_many :bookmarks, dependent: :destroy
 
   validates :username, presence: true, length: { maximum: 12 }
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
