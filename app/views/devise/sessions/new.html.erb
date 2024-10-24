@@ -1,7 +1,18 @@
 <div class="flex items-center justify-center">
   <div class="pt-6 pb-8 mb-4 w-5/6 max-w-xs sm:max-w-md mx-auto">
-    <h2 class="text-center text-xl text-black-400 font-bold mb-4"><%= I18n.t('devise.sessions.new.title') %></h2>
+    <h2 class="text-center text-xl text-black-400 font-bold mb-8"><%= I18n.t('devise.sessions.new.title') %></h2>
     <%= form_with model: @user, url: new_user_session_path, local: true do |f| %>
+
+      <div class="flex justify-center mb-4">
+        <%= link_to user_google_oauth2_omniauth_authorize_path, method: :post, class: "flex items-center py-2 px-4 border border-gray-300 rounded-lg hover:bg-gray-100 transition duration-150 ease-in-out" do %>
+          <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" class="h-4 w-4 mr-2 inline-block" style="height: 20px; width: 20px;" />
+          <span class="inline-block">Googleでログイン</span>
+        <% end %>
+      </div>
+
+      <div class="flex items-center justify-center mb-4">
+        <span class="mx-2 text-gray-500">------------ or ------------</span>
+      </div>
 
       <div class="mb-4">
         <%= f.label :email, t('form.labels.email'),class: "block text-gray-700 text-sm font-bold mb-2" %>

@@ -26,6 +26,7 @@ services:
       - bundle_data:/usr/local/bundle:cached
       - node_modules:/myapp/node_modules
     environment:
+      DATABASE_URL: mysql2://root:password@db:3306/myapp_development
       RAILS_MAX_THREADS: 5
       TZ: Asia/Tokyo
     ports:
