@@ -4,7 +4,8 @@ class User < ApplicationRecord
   mount_uploader :profile_image, ProfileImageUploader
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable,
+         :omniauthable, omniauth_providers: %i[google_oauth2]
 
   has_many :cats, dependent: :destroy
 
@@ -18,5 +19,13 @@ class User < ApplicationRecord
 
   def cats
     super.order(created_at: :desc)
+  end
+
+  def self.from_omniauth(auth)
+    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+      user.email = auth.info.email
+      user.username = auth.info.name
+      user.password = Devise.friendly_token[0, 20]
+    end
   end
 end
