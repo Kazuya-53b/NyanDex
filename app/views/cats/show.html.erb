@@ -21,9 +21,13 @@
   <% else %>
     <% @bookmark = current_user.bookmarks.find_by(cat_id: @cat.id) %>
     <% if @bookmark %>
-      <%= button_to 'ブックマーク解除', cat_bookmark_path(@cat, @bookmark), method: :delete, class: 'btn btn-danger' %>
+      <%= button_to cat_bookmark_path(@cat, @bookmark), method: :delete, class: 'btn btn-danger', data: { turbo: true } do %>
+        <i class="fa fa-cat"></i>
+      <% end %>
     <% else %>
-      <%= button_to 'ブックマーク', cat_bookmarks_path(@cat), method: :post, class: 'btn btn-primary' %>
+      <%= button_to cat_bookmarks_path(@cat), method: :post, class: 'btn btn-primary', data: { turbo: true } do %>
+        <i class="fa fa-cat"></i>
+      <% end %>
     <% end %>
   <% end %>
 </div>

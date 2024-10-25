@@ -61,10 +61,6 @@ class CatsController < ApplicationController
     end
   end
 
-  def set_cat
-    @cat = Cat.find(params[:id])
-  end
-
   def ensure_owner
     unless @cat.user_id == current_user.id
       redirect_to @cat, flash: { alert: "権限がありません" }
