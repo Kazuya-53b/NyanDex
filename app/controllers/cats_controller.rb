@@ -49,6 +49,10 @@ class CatsController < ApplicationController
     redirect_to mypage_user_path(current_user), notice: "プロフィールを削除しました"
   end
 
+  def bookmarks
+    @bookmark_cats = current_user.bookmark_cats.includes(:user).order(created_at: :desc)
+  end
+
   private
 
   def cat_params

@@ -9,6 +9,7 @@ class User < ApplicationRecord
 
   has_many :cats, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
+  has_many :bookmark_cats, through: :bookmarks, source: :cat
 
   validates :username, presence: true, length: { maximum: 12 }
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -28,5 +29,17 @@ class User < ApplicationRecord
       user.username = auth.info.name
       user.password = Devise.friendly_token[0, 20]
     end
+  end
+
+  def bookmark(cat)
+    bookmark_cats << cat
+  end
+  
+  def unbookmark(cat)
+    bookmark_cats.destroy(cat)
+  end
+  
+  def bookmark?(cat)
+    bookmark_cats.include?(cat)
   end
 end
