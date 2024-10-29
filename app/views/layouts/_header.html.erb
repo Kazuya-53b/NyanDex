@@ -13,7 +13,9 @@
         <div id="dropdown-menu" class="hidden absolute bg-white shadow-md mt-2 rounded-lg z-10">
         <ul class="flex flex-col">
           <li><%= link_to 'マイページ', mypage_user_path(current_user), class: 'block px-4 py-2 hover:bg-gray-100' %></li>
+          <li><%= link_to 'ブックマーク一覧', bookmarks_cats_path, class: 'block px-4 py-2 hover:bg-gray-100' %></li>
           <li><%= link_to 'ユーザー設定', user_path(current_user), class: 'block px-4 py-2 hover:bg-gray-100' %></li>
+          <li><hr class="border-gray-300 my-2"></li>
           <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'block px-4 py-2 hover:bg-gray-100' %></li>
         </ul>
       </div>
