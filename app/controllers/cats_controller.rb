@@ -6,10 +6,6 @@ class CatsController < ApplicationController
 
   def index
     @cats = Cat.includes(:user).order(created_at: :desc).page(params[:page]).per(12)
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
   end
 
   def new
@@ -49,6 +45,10 @@ class CatsController < ApplicationController
     redirect_to mypage_user_path(current_user), notice: "プロフィールを削除しました"
   end
 
+  def bookmarks
+    @bookmark_cats = current_user.bookmark_cats.includes(:user).order(created_at: :desc)
+  end
+
   private
 
   def cat_params
@@ -59,10 +59,6 @@ class CatsController < ApplicationController
     if params[:page].present? && params[:page].to_i > 1
       authenticate_user!
     end
-  end
-
-  def set_cat
-    @cat = Cat.find(params[:id])
   end
 
   def ensure_owner

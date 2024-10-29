@@ -3,6 +3,12 @@ class ApplicationController < ActionController::Base
 
   allow_browser versions: :modern
 
+  private
+
+  def set_cat
+    @cat = Cat.find(params[:cat_id] || params[:id])
+  end
+
   protected
 
   def configure_permitted_parameters
