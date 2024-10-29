@@ -1,0 +1,3 @@
+<%= button_to bookmark_path(current_user.bookmarks.find_by(cat_id: cat.id)), id: "unbookmark-button-for-cat-#{cat.id}", method: :delete do %>
+  <i class="fa fa-heart fa-lg text-red-500"></i>
+<% end %>

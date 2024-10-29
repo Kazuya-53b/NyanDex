@@ -1,0 +1,7 @@
+<div class='flex items-center justify-canter ml-2 mb-4'>
+  <% if current_user.bookmark?(cat) %>
+    <%= render 'unbookmark', { cat: @cat } %>
+  <% else %>
+    <%= render 'bookmark', { cat: @cat } %>
+  <% end %>
+</div>
