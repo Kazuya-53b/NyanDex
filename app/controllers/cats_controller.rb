@@ -6,10 +6,6 @@ class CatsController < ApplicationController
 
   def index
     @cats = Cat.includes(:user).order(created_at: :desc).page(params[:page]).per(12)
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
   end
 
   def new
