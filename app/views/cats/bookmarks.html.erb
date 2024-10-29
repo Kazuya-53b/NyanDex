@@ -2,16 +2,18 @@
   <%= I18n.t('cats.bookmarks.title') %>
 </h2>
 
-<% if @bookmark_cats.present? %>
-  <div class="grid gap-4 grid-cols-2 md:grid-cols-3 mb-10">
-    <%= render CatCardComponent.with_collection(@cats) %>
-  </div>
-<% else %>
-  <div class="flex flex-col justify-center items-center mt-20 mb-10">
-    <p class="mb-4">ブックマークがありません<p>
-    <%= link_to 'にゃんこ一覧へ', root_path, class: 'text-blue-500 underline' %>
-  </div>
-<% end %>
+<div class="container mx-auto px-8 max-w-screen-lg mb-10">
+  <% if @bookmark_cats.present? %>
+    <div class="grid gap-4 grid-cols-2 md:grid-cols-3 mb-10">
+      <%= render CatCardComponent.with_collection(@bookmark_cats) %>
+    </div>
+  <% else %>
+    <div class="flex flex-col justify-center items-center mt-20 mb-10">
+      <p class="mb-4">ブックマークがありません<p>
+      <%= link_to 'にゃんこ一覧へ', root_path, class: 'text-blue-500 underline' %>
+    </div>
+  <% end %>
+</div>
 
 <div class="pgn-group flex justify-center mt-4 mb-4">
   <div class="pagination">
