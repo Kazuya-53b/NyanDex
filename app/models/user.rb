@@ -34,11 +34,11 @@ class User < ApplicationRecord
   def bookmark(cat)
     bookmark_cats << cat
   end
-  
+
   def unbookmark(cat)
     bookmark_cats.destroy(cat)
   end
-  
+
   def bookmark?(cat)
     bookmark_cats.include?(cat)
   end
