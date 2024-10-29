@@ -1,0 +1,24 @@
+<h2 class="text-center text-xl text-black-400 font-bold mb-5">
+  <%= I18n.t('cats.bookmarks.title') %>
+</h2>
+
+<% if @bookmark_cats.present? %>
+  <div class="grid gap-4 grid-cols-2 md:grid-cols-3 mb-10">
+    <%= render CatCardComponent.with_collection(@cats) %>
+  </div>
+<% else %>
+  <div class="flex flex-col justify-center items-center mt-20 mb-10">
+    <p class="mb-4">ブックマークがありません<p>
+    <%= link_to 'にゃんこ一覧へ', root_path, class: 'text-blue-500 underline' %>
+  </div>
+<% end %>
+
+<div class="pgn-group flex justify-center mt-4 mb-4">
+  <div class="pagination">
+    <%= link_to_previous_page(@bookmark_cats, '<', class: 'page prev') || '<span class="page prev disabled"><</span>'.html_safe %>
+
+    <span class="page-info mx-4"><%= @bookmark_cats.current_page %> / <%= @bookmark_cats.total_pages %> Page</span>
+
+    <%= link_to_next_page(@bookmark_cats, '>', class: 'page next') || '<span class="page next disabled">></span>'.html_safe %>
+  </div>
+</div>

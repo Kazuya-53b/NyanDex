@@ -46,7 +46,7 @@ class CatsController < ApplicationController
   end
 
   def bookmarks
-    @bookmark_cats = current_user.bookmark_cats.includes(:user).order(created_at: :desc)
+    @bookmark_cats = current_user.bookmark_cats.includes(:user).order(created_at: :desc).page(params[:page]).per(12)
   end
 
   private
