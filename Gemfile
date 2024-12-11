@@ -36,7 +36,7 @@ gem "view_component"
 
 gem "mini_magick", "~> 4.13"
 
-gem "activesupport", "~> 7.2.1"
+gem "activesupport", "~> 7.2.2"
 
 gem "kaminari"
 
