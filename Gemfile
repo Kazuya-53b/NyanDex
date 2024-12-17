@@ -24,7 +24,7 @@ gem "hotwire-rails"
 
 gem "devise"
 
-gem "font-awesome-sass", "~> 6.5.2"
+gem "font-awesome-sass", "~> 6.7.2"
 
 gem "aws-sdk-s3", "~> 1.169"
 
