@@ -30,7 +30,7 @@ gem "aws-sdk-s3", "~> 1.169"
 
 gem "carrierwave", "~> 3.0.7"
 
-gem "fog-aws", "~> 3.29"
+gem "fog-aws", "~> 3.30"
 
 gem "view_component"
 
